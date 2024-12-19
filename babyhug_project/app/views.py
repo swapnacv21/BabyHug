@@ -35,3 +35,33 @@ def shop_home(req):
     else:
         return redirect(shop_login)
 
+
+
+def register(req):
+    if req.method=='POST':
+        name=req.POST['name']
+        email=req.POST['email']
+        password=req.POST['password']
+        try:
+            data=User.objects.create_user(first_name=name,email=email,password=password,username=email)
+            data.save()
+            return redirect(shop_login)
+        except:
+            messages.warning(req,"Email Exists")
+            return redirect(register)
+    else:
+        return render(req,'user/register.html')
+
+
+def add_product(req):
+    if req.method=='POST':
+        id=req.POST['pro_id']
+        name=req.POST['name']
+        discription=req.POST['discription']
+        price=req.POST['price']
+        offer_price=req.POST['o_price']
+        file=req.FILES['img']
+        data=Product.objects.create(product_id=id,product_name=name,price=price,offer_price=offer_price,img=file,dis=discription)
+        data.save()
+        return redirect(shop_home)
+    return render(req,'shop/add_product.html')
