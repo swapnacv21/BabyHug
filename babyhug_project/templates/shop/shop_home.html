@@ -6,11 +6,9 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
 </head>
 <body>
-    
-
-
     <nav class="navbar navbar-expand-sm" style="background-color:rgb(126, 215, 211);">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><b>Baby Hug</b></a>
@@ -36,7 +34,28 @@
         </div>
     </nav>
 
-
     <h2>shop home page</h2>
+
+    <div class="container mt-5">
+        <div class="row">
+            {% for pro in products %}
+            <div class="col-lg-4">
+                <div class="card" style="height: 730px;">
+                    <img class="card-img-top" src="{{pro.img.url}}" alt="Card image" style="width:100%;height: 400px;">
+                    <div class="card-body">
+                        <h4 class="card-title">{{pro.product_name}}</h4>
+                        <p class="card-text fw-light fw-secondary">{{pro.price}}</p>
+                        <p class="card-text">{{pro.offer_price}}</p>
+                        <div >
+                            <a href="edit_product/{{pro.pk}}" class="btn" style="background-color: rgb(186, 232, 230);width: 100%;">Edit</a>
+                            <a href="delete_product/{{pro.pk}}" class="btn mt-3" style="background-color: rgb(186, 232, 230);width: 100%;">Delete</a>
+                        </div>
+                        <!-- <p class="card-text mt-3">{{pro.dis}}</p> -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
