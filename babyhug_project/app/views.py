@@ -7,28 +7,55 @@ from django.contrib import messages
 
 # Create your views here.
 
-
 def shop_login(req):
     if 'shop' in req.session:
-        return redirect(shop_home)
-    else:
-
-        if req.method=='POST':
-            uname=req.POST['uname']
-            password=req.POST['password']
-            data=authenticate(username=uname,password=password)
-            if data:
+        return redirect(shop_home1)
+    if 'user' in req.session:
+        return redirect(user_home)
+    if req.method=='POST':
+        uname=req.POST['uname']
+        password=req.POST['password']
+        data=authenticate(username=uname,password=password)
+        if data:
+            if data.is_superuser:
                 login(req,data)
                 req.session['shop']=uname
-                return redirect(shop_home)
+                return redirect(shop_home1)
+            else:
+                login(req,data)
+                req.session['user']=uname
+                return redirect(user_home)
+        else:
+            messages.warning(req,"Invalid username or password")
+            return redirect(shop_login)
+    else:
         return render(req,'login.html')
+    
+
+# def shop_login(req):
+#     if 'shop' in req.session:
+#         return redirect(shop_home1)
+#     else:
+
+#         if req.method=='POST':
+#             uname=req.POST['uname']
+#             password=req.POST['password']
+#             data=authenticate(username=uname,password=password)
+#             if data:
+#                 login(req,data)
+#                 req.session['shop']=uname
+#                 return redirect(shop_home1)
+#         return render(req,'login.html')
 
 def shop_logout(req):
     logout(req)
     req.session.flush()
     return redirect(shop_login)
+
+# .....................................admin.............................
+
     
-def shop_home(req):
+def shop_home1(req):
     if 'shop' in req.session:
         product=Product.objects.all()
         return render(req,'shop/shop_home.html',{'products':product})
@@ -36,6 +63,47 @@ def shop_home(req):
         return redirect(shop_login)
 
 
+def add_product(req):
+    if req.method=='POST':
+        id=req.POST['pro_id']
+        name=req.POST['name']
+        discription=req.POST['discription']
+        price=req.POST['price']
+        offer_price=req.POST['o_price']
+        file=req.FILES['img']
+        data=Product.objects.create(product_id=id,product_name=name,price=price,offer_price=offer_price,img=file,dis=discription)
+        data.save()
+        return redirect(shop_home1)
+    return render(req,'shop/add_product.html')
+
+
+def edit_product(req,id):
+    pro=Product.objects.get(pk=id)
+    if req.method=='POST':
+        e_id=req.POST['pro_id']
+        name=req.POST['name']
+        discription=req.POST['discription']
+        price=req.POST['price']
+        offer_price=req.POST['o_price']
+        file=req.FILES.get('img')
+        if file:
+            Product.objects.filter(pk=id).update(product_id=e_id,product_name=name,price=price,offer_price=offer_price,img=file,dis=discription)
+        else:
+            Product.objects.filter(pk=id).update(product_id=e_id,product_name=name,price=price,offer_price=offer_price,dis=discription)
+        return redirect(shop_home1)
+    return render(req,'shop/edit_product.html',{'data':pro})
+
+def delete_product(req,id):
+    data=Product.objects.get(pk=id)
+    url=data.img.url
+    url=url.split('/')[-1]
+    os.remove('media/'+url)
+    data.delete()
+    return redirect(shop_home1)
+
+
+
+# ................................user......................................
 
 def register(req):
     if req.method=='POST':
@@ -52,16 +120,9 @@ def register(req):
     else:
         return render(req,'user/register.html')
 
-
-def add_product(req):
-    if req.method=='POST':
-        id=req.POST['pro_id']
-        name=req.POST['name']
-        discription=req.POST['discription']
-        price=req.POST['price']
-        offer_price=req.POST['o_price']
-        file=req.FILES['img']
-        data=Product.objects.create(product_id=id,product_name=name,price=price,offer_price=offer_price,img=file,dis=discription)
-        data.save()
-        return redirect(shop_home)
-    return render(req,'shop/add_product.html')
+def user_home(req):
+    if 'user' in req.session:
+        data=Product.objects.all()
+        return render(req,'user/user_home.html',{'data':data})
+    else:
+        return redirect(shop_login)
