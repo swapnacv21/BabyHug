@@ -4,16 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+    {% load static %}
+    <link rel="stylesheet" href="../static/css/style1.css">
+    <style>
+        .loginbody{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* height:100vh; */
+            
+            
+        }
+        .loginhead{
+            text-align: center;
+        }
+        .maindiv1{
+            height:90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: rgb(177, 225, 255); */
+            /* max-width: 800px; */
+            width: 100%;
+            /* padding: 80px; */
+            /* border-radius: 8px; */
+            background-image: url(../static/images/bg1.jpg);
+            background-repeat: no-repeat;
+        }
+        
+
+    </style>
 </head>
-<body>
-    <h2>login</h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <p>username : <input type="text" name="uname" id=""></p>
-        <p>password : <input type="password" name="password" id=""></p>
-        <input type="submit" value="Login">
-    </form>
-    <a href="register">register</a>
+<body class="loginbody">
+    <div class="maindiv1">
+        <div>
+            <h2 class="loginhead">LOGIN</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                <p>username : <input type="text" name="uname" id=""></p>
+                <p>password : <input type="password" name="password" id=""></p>
+                <input type="submit" value="Login">
+            </form>
+            <p>Don't have an account?</p>
+            <a href="register">register now</a>
+        </div>
+        
+    </div>
 </body>
 </html>

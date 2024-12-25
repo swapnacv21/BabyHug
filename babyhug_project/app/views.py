@@ -121,8 +121,8 @@ def register(req):
         return render(req,'user/register.html')
 
 def user_home(req):
-    if 'user' in req.session:
+    # if 'user' in req.session:
         data=Product.objects.all()
         return render(req,'user/user_home.html',{'data':data})
-    else:
-        return redirect(shop_login)
+    # else:
+        # return redirect(shop_login)
