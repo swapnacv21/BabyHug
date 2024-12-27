@@ -126,3 +126,7 @@ def user_home(req):
         return render(req,'user/user_home.html',{'data':data})
     # else:
         # return redirect(shop_login)
+
+def view_product(req,pid):
+    data=Product.objects.get(pk=pid)
+    return render(req,'user/view_product.html',{'data':data})
