@@ -11,3 +11,7 @@ class Product(models.Model):
     img = models.FileField()
     dis = models.TextField()
 
+class Cart(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+
