@@ -141,3 +141,4 @@ def add_to_cart(req,pid):
 
 def view_cart(req):
     return render(req,'user/cart_display.html')
+
