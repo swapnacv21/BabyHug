@@ -7,6 +7,7 @@ from django.contrib import messages
 
 # Create your views here.
 
+
 def shop_login(req):
     if 'shop' in req.session:
         return redirect(shop_home1)
@@ -75,6 +76,7 @@ def add_product(req):
         data.save()
         return redirect(shop_home1)
     return render(req,'shop/add_product.html')
+
 
 
 def edit_product(req,id):
