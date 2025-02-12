@@ -4,6 +4,9 @@ from .models import *
 import os
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 
@@ -121,6 +124,28 @@ def register(req):
             return redirect(register)
     else:
         return render(req,'user/register.html')
+    
+
+
+
+# def register(req):
+#     if req.method=='POST':
+#         name=req.POST['name']
+#         email=req.POST['email']
+#         password=req.POST['password']
+#         send_mail('EShop registration', 'E_Shop account created', settings.EMAIL_HOST_USER, [email])
+#         try:
+#             data=User.objects.create_user(first_name=name,email=email,password=password,username=email)
+#             data.save()
+#             return redirect(shop_login)
+#         except:
+#             messages.warning(req,"Email Exists")
+#             return redirect(register)
+#     else:
+#         return render(req,'user/register.html')
+    
+
+
 
 def user_home(req):
     # if 'user' in req.session:
